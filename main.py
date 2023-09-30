@@ -18,28 +18,32 @@ def get_birthdays_per_week(users: list) -> list:
     period = get_period(start_date, 7)
     
     # end_date = start_date + timedelta(7)
+    if not users:
+        res = {} 
+        # [res[key] == [] for key in res.keys()]
+        return res
     
     for user in users:
         bd: date = user["birthday"]
         date_bd = bd.day, bd.month
         
         if date_bd in list(period):
-           date_bd_week = datetime(year=period[date_bd], month=bd.month, day=bd.day)
+            
+            date_bd_week = bd.replace(year=period[date_bd]) # замена в ДР года из периода 
+            
+            bd__weekday = date_bd_week.weekday()
            
-           for key in res.keys():
-              if date_bd_week.strftime('%A') == key:
-                 res[key] = user['name']
-              else:
-                #  date_bd_week.strftime('%A') == 'Saturday' or date_bd_week.strftime('%A') == 'Sunday':
-                 res["Monday"].append(user['name'])
-
-
-        #    print(date_bd_week.weekday()) 
-
+            if bd__weekday in (5, 6):
+                res["Monday"].append(user["name"])
+            else:
+                res[date_bd_week.strftime("%A")].append(user["name"])
+          
+        
         # print(user["name"], period[date_bd] )
     return res   
 
 if __name__ == '__main__':
+   
     users = [{"name": "Bill", "birthday": date(1990, 12, 30)},
              {"name": "Marry", "birthday": date(2000, 1, 2)},
              {"name": "John", "birthday": date(2003, 1, 5)},
@@ -49,8 +53,8 @@ if __name__ == '__main__':
 
     
     print(result)
-    # Виводимо результат
+    # # Виводимо результат
     
-    for day_name, names in result.items():
-        print(f"{day_name}: {', '.join(names)}")
-    get_period(start_date, 7)
+    # for day_name, names in result.items():
+    #     print(f"{day_name}: {', '.join(names)}")
+    # get_period(start_date, 7)
