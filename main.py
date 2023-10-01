@@ -16,17 +16,18 @@ def get_birthdays_per_week(users: list) -> list:
 
     start_date = date(2023, 12, 29)
     period = get_period(start_date, 7)
-    
+    spisok = []
     # end_date = start_date + timedelta(7)
     if not users:
         res = {}
         return res
     for user in users:
         bd_current = user["birthday"]
-        bd_current = bd_current.replace(year=start_date.year)  
-        
-        if all(bd_current < start_date for user in users):
-            return {} 
+        bd_current = bd_current.replace(year=start_date.year)
+        spisok.append(bd_current)
+    print(spisok)    
+    if all(i < start_date for i in spisok):
+        return {} 
       
     for user in users:
         bd: date = user["birthday"]
