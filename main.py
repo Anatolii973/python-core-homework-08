@@ -1,4 +1,7 @@
 from datetime import date, timedelta, datetime
+from collections import defaultdict
+
+
 start_date = date.today()
 end_date = start_date + timedelta(7)
 
@@ -12,23 +15,17 @@ def get_period(start_date: date, days: int): # функция периода в�
     return result
 
 def get_birthdays_per_week(users: list) -> list:
-    res = {"Monday" : [], "Tuesday" : [], "Wednesday" : [], "Thursday" : [], "Friday" : []}
+    # res = {"Monday" : [], "Tuesday" : [], "Wednesday" : [], "Thursday" : [], "Friday" : []}
+    res = defaultdict(list)
 
-    start_date = date(2023, 12, 29)
+    start_date = date.today()
     period = get_period(start_date, 7)
-    spisok = []
+    
     # end_date = start_date + timedelta(7)
     if not users:
         res = {}
         return res
-    for user in users:
-        bd_current = user["birthday"]
-        bd_current = bd_current.replace(year=start_date.year)
-        spisok.append(bd_current)
-    print(spisok)    
-    if all(i < start_date for i in spisok):
-        return {} 
-      
+         
     for user in users:
         bd: date = user["birthday"]
         date_bd = bd.day, bd.month
@@ -44,23 +41,21 @@ def get_birthdays_per_week(users: list) -> list:
             else:
                 res[date_bd_week.strftime("%A")].append(user["name"])
           
-        
-        # print(user["name"], period[date_bd] )
-    return res   
+    return res
 
 if __name__ == '__main__':
    
-    users = [{"name": "Bill", "birthday": date(1990, 12, 30)},
-             {"name": "Marry", "birthday": date(2000, 1, 2)},
-             {"name": "John", "birthday": date(2003, 1, 5)},
-             {"name": "Jack", "birthday": date(2005, 1, 1)}
+    users = [{"name": "Bill", "birthday": date(1990, 9, 1)},
+             {"name": "Marry", "birthday": date(2000, 10, 2)},
+             {"name": "John", "birthday": date(2003, 10, 5)},
+             {"name": "Jack", "birthday": date(2005, 10, 1)}
              ]
     result = get_birthdays_per_week(users)
 
     
     print(result)
-    # # Виводимо результат
+    # Виводимо результат
     
-    # for day_name, names in result.items():
-    #     print(f"{day_name}: {', '.join(names)}")
-    # get_period(start_date, 7)
+    for day_name, names in result.items():
+        print(f"{day_name}: {', '.join(names)}")
+    get_period(start_date, 7)
