@@ -24,8 +24,8 @@ def get_birthdays_per_week(users: list) -> list:
     for user in users:
         bd_current = user["birthday"]
         bd_current = bd_current.replace(year=start_date.year)   
-        if start_date > user['birthday']:
-            
+        if all(user["birthday"] < start_date for user in users):
+            return {} 
       
     for user in users:
         bd: date = user["birthday"]
